@@ -27,4 +27,6 @@ export const styles: Record<string, Style> = {
   bgMagenta: { open: `${esc}45${m}`, close: `${esc}49${m}` },
   bgCyan: { open: `${esc}46${m}`, close: `${esc}49${m}` },
   bgWhite: { open: `${esc}47${m}`, close: `${esc}49${m}` },
+  hidden: { open: `${esc}8${m}`, close: `${esc}28${m}` },
+  visible: { open: `${esc}28${m}`, close: `${esc}28${m}` },
 };

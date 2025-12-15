@@ -1,5 +1,11 @@
 # ms-chroma
 
+[![npm version](https://badge.fury.io/js/%40microstack-dev%2Fms-chroma.svg)](https://badge.fury.io/js/%40microstack-dev%2Fms-chroma)
+[![npm downloads](https://img.shields.io/npm/dm/%40microstack-dev%2Fms-chroma.svg)](https://www.npmjs.com/package/@microstack-dev/ms-chroma)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js Version](https://img.shields.io/node/v/%40microstack-dev%2Fms-chroma)](https://nodejs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+
 A minimal, chainable ANSI color utility for Node.js that provides type-safe terminal styling without dependencies.
 
 ## Overview
@@ -51,6 +57,8 @@ console.log(c.bold('Important'));
 console.log(c.dim('Secondary'));
 console.log(c.underline('Link'));
 console.log(c.inverse('Inverted'));
+console.log(c.hidden('Secret'));
+console.log(c.visible('Text'));
 ```
 
 ### Background Colors
@@ -66,6 +74,7 @@ console.log(c.bgBlue('Notice'));
 ```ts
 console.log(c.red.bold('Critical'));
 console.log(c.green.underline('Highlighted'));
+console.log(c.red.bold.reset('Plain'));
 ```
 
 ### Nested Chaining
@@ -79,6 +88,7 @@ console.log(c.bgBlue.white.bold('Styled text'));
 ```ts
 const level = 'error';
 console.log(c`{red ${level}} occurred at ${new Date().toISOString()}`);
+console.log(c`{hidden Secret} {visible Visible}`);
 ```
 
 ## Template Literal Syntax
@@ -88,6 +98,8 @@ Template literals use `{style text}` blocks to apply styles inline.
 - `{red Error}` applies red color to "Error"
 - `{bold Warning}` applies bold to "Warning"
 - Styles can be chained: `{red.bold Alert}`
+- Reset styles: `{reset Plain}` clears all styles
+- Visibility: `{hidden Secret}` or `{visible Text}`
 - Interpolations work: `{yellow ${variable}}`
 - Unknown styles are ignored silently
 - No nesting of `{}` blocks within styled text
@@ -101,7 +113,10 @@ A proxy-based color builder. Access properties to accumulate styles, call as a f
 ```ts
 c.red('text')           // Red text
 c.red.bold('text')      // Red bold text
+c.red.bold.reset('text') // Plain text (reset clears styles)
 c.red.bold.underline    // Builder for red bold underline
+c.enable().red('text')  // Red text (force enable colors)
+c.disable().red('text') // Plain text (force disable colors)
 ```
 
 Edge cases:
@@ -136,10 +151,14 @@ Support is detected automatically:
 
 When disabled, methods return unmodified strings. No errors thrown.
 
+You can manually override detection:
+- `c.enable()` forces color output
+- `c.disable()` forces plain text output
+
 ## Design Philosophy
 
 ms-chroma embodies microstack-dev's commitment to minimalism:
-- Small API surface (8 colors, 4 modifiers, 8 backgrounds)
+- Small API surface (8 colors, 6 modifiers, 8 backgrounds)
 - Zero dependencies
 - Chainable, typed interface
 - ANSI-only (standard, reliable)

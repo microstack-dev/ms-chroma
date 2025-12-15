@@ -57,6 +57,18 @@ describe('ms-chroma', () => {
     it('inverse', () => {
       expect(c.inverse('test')).toBe('\x1b[7mtest\x1b[27m');
     });
+
+    it('reset', () => {
+      expect(c.red.bold.reset('plain')).toBe('plain');
+    });
+
+    it('hidden', () => {
+      expect(c.hidden('secret')).toBe('\x1b[8msecret\x1b[28m');
+    });
+
+    it('visible', () => {
+      expect(c.visible('text')).toBe('\x1b[28mtext\x1b[28m');
+    });
   });
 
   describe('backgrounds', () => {
@@ -86,6 +98,8 @@ describe('ms-chroma', () => {
       const time = 'now';
       expect(c`{red Error} at {yellow ${time}}`).toBe('\x1b[31mError\x1b[39m at \x1b[33mnow\x1b[39m');
     });
+
+
   });
 
   describe('strip', () => {
@@ -95,6 +109,10 @@ describe('ms-chroma', () => {
 
     it('multiple', () => {
       expect(strip('\x1b[31m\x1b[1mError\x1b[22m\x1b[39m')).toBe('Error');
+    });
+
+    it('hidden', () => {
+      expect(strip('\x1b[8msecret\x1b[28m')).toBe('secret');
     });
   });
 
@@ -119,6 +137,14 @@ describe('ms-chroma', () => {
 
     it('strip works', () => {
       expect(strip('\x1b[31mtest\x1b[39m')).toBe('test');
+    });
+
+    it('enable overrides', () => {
+      expect(c.enable().red('test')).toBe('\x1b[31mtest\x1b[39m');
+    });
+
+    it('disable keeps disabled', () => {
+      expect(c.disable().red('test')).toBe('test');
     });
   });
 });

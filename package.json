@@ -1,6 +1,6 @@
 {
   "name": "@microstack-dev/ms-chroma",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Tiny, modern ANSI color utility",
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
